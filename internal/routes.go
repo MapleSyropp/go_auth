@@ -3,34 +3,45 @@ package routes
 import (
 	"fmt"
 	"net/http"
+	"github.com/rs/cors"
+	"github.com/MapleSyropp/go_auth/cmd/web"
 )
 
 func NewRouter() http.Handler {
-	router := http.NewServeMux()
-	router.HandleFunc("/", helloWorld)
-	router.HandleFunc("/register", register)
-	router.HandleFunc("/login", login)
-	router.HandleFunc("/getUser", getUser)
-	router.HandleFunc("/test", test)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", index)
+	mux.HandleFunc("/register", register)
+	mux.HandleFunc("/login-form", loginForm)
+	mux.HandleFunc("/login", login)
+	mux.HandleFunc("/getUser", getUser)
+
+	router := cors.Default().Handler(mux)
 	return router
 }
 
-func helloWorld(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("inainaina")
+func index(w http.ResponseWriter, req *http.Request) {
+	web.Main().Render(req.Context(), w)
 }
 
 func register(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("register")
+}
+
+func loginForm(w http.ResponseWriter, req *http.Request) {
+	web.Login().Render(req.Context(), w)
 }
 
 func login(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("inainaina")
+	if req.Method != http.MethodPost {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	username := req.FormValue("username")
+	password := req.FormValue("password")
+
+	// Handle login logic here
+	fmt.Fprintf(w, "Login attempted with username: %s and password: %s", username, password)
 }
 
 func getUser(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("inainaina")
-}
-
-func test(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("yea")
 }

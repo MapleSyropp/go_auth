@@ -1,0 +1,12 @@
+package web
+
+templ Main() {
+	@Index() {
+		<button class="w-3/6 h-1/2 bg-red-600"
+		hx-get="http://localhost:8080/login-form" 
+		hx-trigger="click" 
+		hx-swap="afterend">
+			Biboo
+		</button>
+	}
+}
