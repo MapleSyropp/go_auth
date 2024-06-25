@@ -11,9 +11,9 @@ func NewRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/register", register)
-	mux.HandleFunc("/login-form", loginForm)
+	mux.HandleFunc("/register-form", registerForm)
 	mux.HandleFunc("/login", login)
-	mux.HandleFunc("/getUser", getUser)
+	mux.HandleFunc("/login-form", loginForm)
 
 	router := cors.Default().Handler(mux)
 	return router
@@ -23,7 +23,12 @@ func index(w http.ResponseWriter, req *http.Request) {
 	web.Main().Render(req.Context(), w)
 }
 
+func registerForm(w http.ResponseWriter, req *http.Request) {
+	web.Register().Render(req.Context(), w)
+}
+
 func register(w http.ResponseWriter, req *http.Request) {
+	web.Login().Render(req.Context(), w)
 }
 
 func loginForm(w http.ResponseWriter, req *http.Request) {
@@ -40,8 +45,6 @@ func login(w http.ResponseWriter, req *http.Request) {
 	password := req.FormValue("password")
 
 	// Handle login logic here
-	fmt.Fprintf(w, "Login attempted with username: %s and password: %s", username, password)
-}
-
-func getUser(w http.ResponseWriter, req *http.Request) {
+	fmt.Print(w, "Login attempted with username: %s and password: %s", username, password)
+	web.Success().Render(req.Context(), w)
 }
