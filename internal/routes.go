@@ -14,6 +14,7 @@ func NewRouter() http.Handler {
 	mux.HandleFunc("/register-form", registerForm)
 	mux.HandleFunc("/login", login)
 	mux.HandleFunc("/login-form", loginForm)
+	mux.HandleFunc("/repeat", repeat)
 
 	router := cors.Default().Handler(mux)
 	return router
@@ -21,6 +22,10 @@ func NewRouter() http.Handler {
 
 func index(w http.ResponseWriter, req *http.Request) {
 	web.Main().Render(req.Context(), w)
+}
+
+func repeat(w http.ResponseWriter, req *http.Request) {
+	web.Repeat().Render(req.Context(), w)
 }
 
 func registerForm(w http.ResponseWriter, req *http.Request) {
