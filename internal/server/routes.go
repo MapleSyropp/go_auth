@@ -37,10 +37,10 @@ func (s *Server) registerFormHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) registerHandler(w http.ResponseWriter, r *http.Request) {
-	user := new(models.User)
+	user := new(models.UserReq)
 	username := r.FormValue("username")
 	password := r.FormValue("password")
-	user.Name = username
+	user.Username = username
 	user.Password = password
 	database.SaveUser(user, s.db)
 	web.Login().Render(r.Context(), w)

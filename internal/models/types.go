@@ -1,18 +1,27 @@
 package models
 
-type User struct {
-	Name     string `json:"name"`
+type UserReq struct {
+	Username string `json:"name"`
 	Password string `json:"password"`
 }
 
-func NewUser(name, password string) *User {
-	return &User{
-		Name:     name,
+func NewUserReq(username, password string) *UserReq {
+	return &UserReq{
+		Username: username,
 		Password: password,
 	}
 }
 
-// test
-type response struct {
-	Data string `json:"data"`
+type User struct {
+	ID       int    `json:"id"`
+	Username string `json:"name"`
+	Password string `json:"password"`
+}
+
+func NewUser(id int, username, password string) *User {
+	return &User{
+		ID:       id,
+		Username: username,
+		Password: password,
+	}
 }

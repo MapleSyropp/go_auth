@@ -54,7 +54,7 @@ func CreateDatabase() *Postgres {
 func CreateUserTable(postgres *Postgres) {
 	q := `CREATE TABLE IF NOT EXISTS Users (
 		id SERIAL PRIMARY KEY,
-		name text NOT NULL,
+		username text NOT NULL,
 		password text NOT NULL
 	);`
 	_, err := postgres.db.Exec(q)
@@ -63,11 +63,21 @@ func CreateUserTable(postgres *Postgres) {
 	}
 }
 
-func SaveUser(user *models.User, postgres *Postgres) error {
-	pstmt, err := postgres.db.Prepare("INSERT INTO Users (name, password), VALUES ($1, $2);")
+func SaveUser(user *models.UserReq, postgres *Postgres) error {
+	pstmt, err := postgres.db.Prepare("INSERT INTO Users (username, password) VALUES ($1, $2);")
 	defer pstmt.Close()
 
-	u, err := pstmt.Exec(user.Name, user.Password)
+	u, err := pstmt.Exec(user.Username, user.Password)
 	fmt.Println(u)
 	return err
+}
+
+func GetUser(username string, postgres *Postgres) string {
+	q := postgres.db.QueryRow("SELECT * FROM Users WHERE username=$1 LIMIT 1", username)
+	newUser := new(models.User)
+	err := q.Scan(&newUser.ID, &newUser.Username, &newUser.Password)
+	if err != nil {
+		log.Fatal("failed scanning user", err)
+	}
+	return newUser.Username
 }
