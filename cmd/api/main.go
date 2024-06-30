@@ -1,15 +1,15 @@
 package main
 
 import (
-	"net/http"
-	"github.com/MapleSyropp/go_auth/internal"
+	"fmt"
+
+	"github.com/MapleSyropp/go_auth/internal/server"
 )
 
-func main()  {
-	router := routes.NewRouter()
-	err := http.ListenAndServe(":8080", router)
+func main() {
+	server := server.NewServer(8080)
+	err := server.ListenAndServe()
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("server failed at start: %s", err))
 	}
 }
-

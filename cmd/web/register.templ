@@ -1,20 +1,23 @@
 package web
 
 templ Register() {
-	<form id="register-form" class="flex flex-col justify-center items-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-		<div>
-			<label for="username">Username:</label>
-			<input class="mb-8 bg-neutral-900 border-4 border-pink-500 text-pink-500/75" type="text" id="username" name="username" required><br>
-			<label for="password">Password:</label>
-			<input class="mb-8 bg-neutral-900 border-4 border-pink-500 text-pink-500/75" type="password" id="password" name="password" required><br>
-		</div>
-		<div>
-			<button 
-				hx-swap="outerHTML"
-				hx-target="#register-form"
-				hx-post="http://localhost:8080/register">
-				Done!
-			</button>
-		</div>
-	</form>
+<form id="register-form"
+	class="flex flex-col justify-center items-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+	hx-swap="outerHTML" hx-target="#register-form" hx-post="http://localhost:8080/register">
+	<div>
+		<label for="username">Username:</label>
+		<input class="mb-8 bg-neutral-900 border-4 border-pink-500 text-pink-500/75" type="text" id="username"
+			name="username" required />
+		<br />
+		<label for="password">Password:</label>
+		<input class="mb-8 bg-neutral-900 border-4 border-pink-500 text-pink-500/75" type="password" id="password"
+			name="password" required />
+		<br />
+	</div>
+	<div>
+		<button>
+			Done!
+		</button>
+	</div>
+</form>
 }
