@@ -3,7 +3,6 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/MapleSyropp/go_auth/internal/models"
@@ -23,10 +22,10 @@ type Postgres struct {
 	db *sql.DB
 }
 
-func CreateDatabase() *Postgres {
+func CreateDatabase() (*Postgres, error) {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatal("err lodin", err)
+		return nil, err
 	}
 
 	var (
@@ -39,19 +38,19 @@ func CreateDatabase() *Postgres {
 	connStr := fmt.Sprintf("user=%s dbname=%s password=%s sslmode=disable", username, database, password)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal("failed to connect to db", err)
+		return nil, err
 	}
 	dbInstance = &Postgres{
 		db: db,
 	}
 	if err := db.Ping(); err != nil {
-		log.Fatal("no connection with db", err)
+		return nil, err
 	}
 	CreateUserTable(dbInstance)
-	return dbInstance
+	return dbInstance, nil
 }
 
-func CreateUserTable(postgres *Postgres) {
+func CreateUserTable(postgres *Postgres) error {
 	q := `CREATE TABLE IF NOT EXISTS Users (
 		id SERIAL PRIMARY KEY,
 		username text NOT NULL,
@@ -59,25 +58,31 @@ func CreateUserTable(postgres *Postgres) {
 	);`
 	_, err := postgres.db.Exec(q)
 	if err != nil {
-		log.Fatal("failed to create user table", err)
+		return err
 	}
+	return nil
 }
 
 func SaveUser(user *models.UserReq, postgres *Postgres) error {
 	pstmt, err := postgres.db.Prepare("INSERT INTO Users (username, password) VALUES ($1, $2);")
+	if err != nil {
+		return err
+	}
 	defer pstmt.Close()
 
-	u, err := pstmt.Exec(user.Username, user.Password)
-	fmt.Println(u)
-	return err
+	_, err = pstmt.Exec(user.Username, user.Password)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func GetUser(username string, postgres *Postgres) string {
+func GetUser(username string, postgres *Postgres) (*models.User, error) {
 	q := postgres.db.QueryRow("SELECT * FROM Users WHERE username=$1 LIMIT 1", username)
 	newUser := new(models.User)
 	err := q.Scan(&newUser.ID, &newUser.Username, &newUser.Password)
 	if err != nil {
-		log.Fatal("failed scanning user", err)
+		return nil, err
 	}
-	return newUser.Username
+	return newUser, nil
 }

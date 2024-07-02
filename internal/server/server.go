@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -14,9 +15,13 @@ type Server struct {
 }
 
 func NewServer(port int) *http.Server {
+	database, err := database.CreateDatabase()
+	if err != nil {
+		log.Fatal("failed to create database", err)
+	}
 	NewServer := &Server{
 		port: port,
-		db:   database.CreateDatabase(),
+		db:   database,
 	}
 
 	server := &http.Server{
