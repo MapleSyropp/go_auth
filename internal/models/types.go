@@ -27,5 +27,7 @@ func NewUser(id int, username, password string) *User {
 }
 
 type ApiError struct {
-	Error string
+	Error   error
+	Message string
+	Code    int
 }

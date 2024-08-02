@@ -1,3 +1,5 @@
 *_templ.go
 .env
 *.pem
+start.sh
+end.sh

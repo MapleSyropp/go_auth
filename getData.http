@@ -1,2 +1,0 @@
-GET http://localhost:8080/getData
-Authorization: Bearer your_access_token_here
