@@ -61,6 +61,7 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) *models.Ap
 	password := r.FormValue("password")
 	user, err := database.GetUser(username, s.db)
 	if err != nil {
+		web.FailedHandler(w, r)
 		return &models.ApiError{Error: err, Message: "", Code: http.StatusInternalServerError}
 	}
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
