@@ -1,10 +1,12 @@
 module github.com/MapleSyropp/go_auth
 
-go 1.22.2
+go 1.23
+
+toolchain go1.23.5
 
 require github.com/rs/cors v1.11.0
 
-require github.com/a-h/templ v0.2.747
+require github.com/a-h/templ v0.3.819
 
 require github.com/lib/pq v1.10.9
 

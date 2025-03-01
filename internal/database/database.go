@@ -11,13 +11,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var (
-	port       = os.Getenv("DB_PORT")
-	host       = os.Getenv("DB_HOST")
-	schema     = os.Getenv("DB_SCHEMA")
-	dbInstance *Postgres
-)
-
 type Postgres struct {
 	db *sql.DB
 }
@@ -29,13 +22,15 @@ func CreateDatabase() (*Postgres, error) {
 	}
 
 	var (
-		database   = os.Getenv("DB_DATABASE")
-		password   = os.Getenv("DB_PASSWORD")
-		username   = os.Getenv("DB_USERNAME")
+		database   = os.Getenv("DB_DATABASE_AUTH")
+		password   = os.Getenv("DB_PASSWORD_AUTH")
+		username   = os.Getenv("DB_USERNAME_AUTH")
+		port       = os.Getenv("DB_PORT_AUTH")
+		host       = os.Getenv("DB_HOST_AUTH")
 		dbInstance *Postgres
 	)
 
-	connStr := fmt.Sprintf("user=%s dbname=%s password=%s sslmode=disable", username, database, password)
+	connStr := fmt.Sprintf("user=%s dbname=%s password=%s host=%s port=%s sslmode=disable", username, database, password, host, port)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err

@@ -17,7 +17,7 @@ type Server struct {
 func NewServer(port int) *http.Server {
 	database, err := database.CreateDatabase()
 	if err != nil {
-		log.Fatal("failed to create database", err)
+		log.Fatal("failed to create database \n", err)
 	}
 	NewServer := &Server{
 		port: port,

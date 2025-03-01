@@ -1,0 +1,49 @@
+<div class="flex flex-col items-center justify-center w-screen">
+	<form [formGroup]="form" (ngSubmit)="onSubmit()">
+		<div class="mb-8">
+			<p-floatlabel>
+				<input
+					pInputText
+					id="username"
+					formControlName="username"
+					pSize="large"
+				/>
+				<label for="username">Username</label>
+			</p-floatlabel>
+		</div>
+
+		<div class="mb-8">
+			<p-floatlabel>
+				<p-password
+					id="password"
+					formControlName="password"
+					[feedback]="false"
+					size="large"
+					promptLabel="Choose a password"
+					weakLabel="Weak"
+					mediumLabel="Medium"
+					strongLabel="Strong"
+				/>
+				<label for="password">Password</label>
+			</p-floatlabel>
+		</div>
+
+		<div class="flex justify-center mb-4">
+			<p-button
+				routerLink="/"
+				label="Log In"
+				type="submit"
+				variant="text"
+				severity="primary" />
+		</div>
+
+		<div class="flex justify-center">
+			<p-button
+				routerLink="/register"
+				label="Don't have an account?"
+				variant="text"
+				severity="secondary"
+			/>
+		</div>
+	</form>
+</div>
